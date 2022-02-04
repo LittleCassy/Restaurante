@@ -3,6 +3,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		RestaurantService.init();
+		//RestaurantService.init();
+		RestaurantInputManager.askDay(2);
 	}
 }

@@ -1,6 +1,4 @@
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class RestaurantService
@@ -62,42 +60,23 @@ public class RestaurantService
 	
 	public static void newReservation() 
 	{
-		
-			LocalDateTime reservoirDate = null;
-			
-			try 
-			{
-				System.out.println("\n////\n//// When do you want the reservation? Input in the form: HH DD MM");
-				int tempHour = input.nextInt();
-				int tempDay = input.nextInt();
-				int tempMonth = input.nextInt();
-				
-				reservoirDate = LocalDateTime.of(LocalDateTime.now().getYear(), tempMonth, tempDay, tempHour, 00);
-				
-			}catch(Exception e) 
-			{
-				System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage \n//// integers in the form: HH DD MM. Please, try again.");
-				newReservation();
+		try{
+			int aux_Month = RestaurantInputManager.askMonth();
+			int aux_Day = RestaurantInputManager.askDay(aux_Month);
+			int aux_Hour = RestaurantInputManager.askHour();
+			int aux_NumTable = RestaurantInputManager.customerNumber();
+
+			LocalDateTime reservoirDate = LocalDateTime.of(LocalDateTime.now().getYear(), aux_Month, aux_Day, aux_Hour, 0); //TODO Minutos
+
+			if(checkOccupancy(reservoirDate, aux_NumTable)){
+				createReservoir(reservoirDate, aux_NumTable);
+			}else{
+				System.out.println("\n////\n//// Ow, Apologize. We are full at that time \n//// Try another date, or kill some of your friends.");
 			}
-			
-			try 
-			{
-				System.out.println("\n////\n//// And... How many are you?");
-				int tempCustomers = input.nextInt();
-				
-				if(checkOcupancy(reservoirDate, (int)tempCustomers/4)) 
-				{
-					createReservoir(reservoirDate, (int)tempCustomers/4);
-				}else 
-				{
-					System.out.println("\n////\n//// Ow, Apologize. We are full at that time \n//// Do you want another date?");
-				}
-				
-			}catch(Exception e) 
-			{
-				System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage \n//// integers. Please, try again.");
-				newReservation();
-			}
+		}catch (Exception e){
+			System.out.println("\n////\n//// Ooopsies! Something went wrong. \\n//// Please, try again later.");
+		}
+
 	}
 	
 	public static void createReservoir(LocalDateTime reservoirDate, int tablesToOccupy) 
@@ -105,30 +84,12 @@ public class RestaurantService
 		String tempName=null;
 		int tempPhone=0;
 		
-		try 
-		{
-			System.out.println("\n////\n//// Congrats! We have a nice place for you. \\n//// How should we call you?");
-			tempName = input.next();
-			
-		}catch(Exception e) 
-		{
-			System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage \n//// text in UTF-8 encode.");
-			createReservoir(reservoirDate, tablesToOccupy);
-		}
-		
-		try 
-		{
-			System.out.println("\n////\n//// And last, but not least, a phone number.");
-			tempPhone = input.nextInt();
-			
-		}catch(Exception e) 
-		{
-			System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage \n//// integers. Please, try again.");
-			createReservoir(reservoirDate, tablesToOccupy);
-		}
-		
+
 		Reservation newReservation= new Reservation(tempName, tempPhone, tablesToOccupy, reservoirDate);
 		addReservoir(newReservation);
+
+
+
 	}
 	
 	public static void addReservoir(Reservation newReservoir) 
@@ -137,23 +98,17 @@ public class RestaurantService
 		System.out.println("\n////\n//// Your reservation has been completed. We'll be waiting for you!");
 	}
 	
-	public static boolean checkOcupancy(LocalDateTime checkReservoir, int tablesNeeded) 
+	public static boolean checkOccupancy(LocalDateTime checkReservoir, int tablesNeeded)
 	{
-		int tempHourOcupancy = 0;
-		
+		int tempHourOccupancy = 0;
+
 		for (Reservation res : Restaurant.getMyReservations()) {
 			if(res.getReservoirDate().equals(checkReservoir)) 
 			{
-				tempHourOcupancy += res.getNumberOfReserverdTables();
+				tempHourOccupancy += res.getNumberOfReserverdTables();
 			}
 		}
- 		
-		if((tempHourOcupancy+tablesNeeded) > Restaurant.getNumtables()) 
-		{
-			return false;
-		}else 
-		{
-			return true;
-		}
+
+		return tempHourOccupancy + tablesNeeded <= Restaurant.getNumtables();
 	}
 }
