@@ -7,14 +7,15 @@ public class RestaurantInputManager
 
     public static int askHour(){
         int hour=0;
+        boolean sentinel=false;
         do{
             try{
+                hour=0;
                 System.out.println("\n////\n//// When do you want the reservation? Our schedule is from 13-15 and 19-22");
                 hour = input.nextInt();
 
-                if((hour < Restaurant.getOpenTime1() && hour >= Restaurant.getCloseTime1()) || (hour < Restaurant.getOpenTime2() && hour >= Restaurant.getCloseTime2())){
-                    System.out.println("Comply");
-                    break;
+                if((hour >= Restaurant.getOpenTime1() && hour < Restaurant.getCloseTime1()) || (hour >= Restaurant.getOpenTime2() && hour < Restaurant.getCloseTime2())){
+                    sentinel=true;
                 }else{
                     System.out.println("\n////\n//// Oh, sorry. Our schedule is from 13-15 and 19-22. \n//// Please, try again.");
                 }
@@ -22,7 +23,7 @@ public class RestaurantInputManager
             {
                 System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage integers. \n//// Please, try again.");
             }
-        }while (!(hour < Restaurant.getOpenTime1() && hour >= Restaurant.getCloseTime1()) && !(hour < Restaurant.getOpenTime2() && hour >= Restaurant.getCloseTime2()));
+        }while (!sentinel);
         return hour;
     }
 
@@ -92,30 +93,28 @@ public class RestaurantInputManager
         }while (customers<=0 || customers>Restaurant.getNumchairs());
         return customers/Restaurant.getNumchairsbytable();
     }
+
+    public static String askName(){
+        System.out.println("\n////\n//// May we know your name? So we can refer properly to you.");
+        return input.next();
+    }
+
+    public static int askPhone() {
+        int phone=0;
+
+        do{
+            try{
+                System.out.println("\n////\n//// Any phone number? Just in case of any totally unlikely and unexpected incident.\n//// No need for prefixes!");
+                phone = input.nextInt();
+                if(phone<100000000)
+                {
+                    System.out.println("\n////\n//// Ow, sorry. We don't recognize the number.\n//// Please, input a 9 digit long number.");
+                }
+            }catch (Exception e)
+            {
+                System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage integers. \n//// Please, try again.");
+            }
+        }while (phone<100000000);
+        return phone;
+    }
 }
-
-    /*
-			try
-			{
-				System.out.println("\n////\n//// And... How many are you?");
-				int tempCustomers = input.nextInt();
-
-				if(tempCustomers/4 <= Restaurant.getNumtables())
-				{
-					if(checkOccupancy(reservoirDate, tempCustomers/4))
-					{
-						createReservoir(reservoirDate, tempCustomers/4);
-					}else
-					{
-						System.out.println("\n////\n//// Ow, Apologize. We are full at that time \n//// Do you want another date?");
-					}
-				}else{
-					System.out.println("\n////\n//// Ow, sorry. That exceeds our maximum occupancy \n//// Sorry!");
-					printMenu();
-				}
-			}catch(Exception e)
-			{
-				System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage \n//// integers. Please, try again.");
-				newReservation();
-			}
-	*/

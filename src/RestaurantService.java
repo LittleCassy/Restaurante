@@ -22,7 +22,7 @@ public class RestaurantService
 		System.out.println("////");
 		System.out.println("//// 2- Check reservation");
 		System.out.println("////");
-		System.out.println("//// 3- Save reservoir's register");
+		System.out.println("//// 3- Check all reservations");
 		System.out.println("////");
 		System.out.println("///////////////////////////////////////");
 		
@@ -43,7 +43,7 @@ public class RestaurantService
 					//TODO Revisar lista
 					break;
 				case 3:
-					//TODO Guardar registro de reservas
+					checkReservationList();
 					break;
 
 				default:
@@ -81,15 +81,11 @@ public class RestaurantService
 	
 	public static void createReservoir(LocalDateTime reservoirDate, int tablesToOccupy) 
 	{
-		String tempName=null;
-		int tempPhone=0;
-		
+		String tempName= RestaurantInputManager.askName();
+		int tempPhone= RestaurantInputManager.askPhone();
 
 		Reservation newReservation= new Reservation(tempName, tempPhone, tablesToOccupy, reservoirDate);
 		addReservoir(newReservation);
-
-
-
 	}
 	
 	public static void addReservoir(Reservation newReservoir) 
@@ -110,5 +106,10 @@ public class RestaurantService
 		}
 
 		return tempHourOccupancy + tablesNeeded <= Restaurant.getNumtables();
+	}
+
+	public static void checkReservationList()
+	{
+		System.out.println(Restaurant.getMyReservations());
 	}
 }

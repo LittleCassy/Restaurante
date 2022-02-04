@@ -56,4 +56,9 @@ public class Reservation
 	public void setReservoirDate(LocalDateTime reservoirDate) {
 		this.reservoirDate = reservoirDate;
 	}
+
+	@Override
+	public String toString() {
+		return "/////////// \nClient: " + reservoirName + "\nDate: " + reservoirDate + "\nPhone: " + phoneNumber + "\nTables Occupied: " + numberOfReserverdTables;
+	}
 }
