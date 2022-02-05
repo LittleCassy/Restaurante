@@ -3,7 +3,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		//RestaurantService.init();
-		RestaurantInputManager.askHour();
+		RestaurantService.init();
+		//RestaurantInputManager.askHour();
 	}
 }

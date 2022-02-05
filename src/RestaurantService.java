@@ -8,7 +8,6 @@ public class RestaurantService
 	public static void init() 
 	{
 		printMenu();
-		//newReservation();
 	}
 	
 	public static void printMenu()
@@ -40,7 +39,7 @@ public class RestaurantService
 					newReservation();
 					break;
 				case 2:
-					//TODO Revisar lista
+					checkSpecificReservation();
 					break;
 				case 3:
 					checkReservationList();
@@ -57,7 +56,7 @@ public class RestaurantService
 				catchData();
 			}
 	}
-	
+
 	public static void newReservation() 
 	{
 		try{
@@ -81,7 +80,9 @@ public class RestaurantService
 	
 	public static void createReservoir(LocalDateTime reservoirDate, int tablesToOccupy) 
 	{
+		System.out.println("\n////\n//// May we know your name? So we can refer properly to you.");
 		String tempName= RestaurantInputManager.askName();
+		System.out.println("\n////\n//// Any phone number? Just in case of any totally unlikely and unexpected incident.\n//// No need for prefixes!");
 		int tempPhone= RestaurantInputManager.askPhone();
 
 		Reservation newReservation= new Reservation(tempName, tempPhone, tablesToOccupy, reservoirDate);
@@ -92,6 +93,38 @@ public class RestaurantService
 	{
 		Restaurant.getMyReservations().add(newReservoir);
 		System.out.println("\n////\n//// Your reservation has been completed. We'll be waiting for you!");
+		printMenu();
+	}
+
+	public static void checkSpecificReservation()
+	{
+		System.out.println("\n////\n//// Give us the name used in the reservation process.");
+		String tempName= RestaurantInputManager.askName();
+		System.out.println("\n////\n//// And now, the phone used in the same reservation.");
+		int tempPhone= RestaurantInputManager.askPhone();
+
+		Reservation aux = checkList(tempName,tempPhone);
+		if(aux==null){
+			System.out.println("\n////\n//// Oh-Oh. We can not find that reservation. Please, check the data.");
+		}else{
+			System.out.println(aux);
+		}
+
+		printMenu();
+	}
+
+	public static Reservation checkList(String name, int phone)
+	{
+		Reservation aux = null;
+
+		for (Reservation res : Restaurant.getMyReservations()) {
+			if(res.getReservoirName().equals(name) && res.getPhoneNumber() == phone)
+			{
+				aux = res;
+			}
+		}
+
+		return aux;
 	}
 	
 	public static boolean checkOccupancy(LocalDateTime checkReservoir, int tablesNeeded)
@@ -111,5 +144,8 @@ public class RestaurantService
 	public static void checkReservationList()
 	{
 		System.out.println(Restaurant.getMyReservations());
+		printMenu();
 	}
+
+
 }

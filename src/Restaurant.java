@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Restaurant 
 {
-	private static ArrayList<Reservation> myReservations = new ArrayList<Reservation>();
+	private static ArrayList<Reservation> myReservations = new ArrayList<>();
 	private static final int numTables = 4;
 	private static final int numChairs = 16;
 	//MAYBE

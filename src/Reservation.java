@@ -59,6 +59,6 @@ public class Reservation
 
 	@Override
 	public String toString() {
-		return "/////////// \nClient: " + reservoirName + "\nDate: " + reservoirDate + "\nPhone: " + phoneNumber + "\nTables Occupied: " + numberOfReserverdTables;
+		return "/////////// \nClient: " + reservoirName + "\nDate: " + reservoirDate + "\nPhone: " + phoneNumber + "\nTables Occupied: " + numberOfReserverdTables + "\n///////////";
 	}
 }
