@@ -27,6 +27,27 @@ public class RestaurantInputManager
         return hour;
     }
 
+    public static int askYear(){
+        int year=0;
+        boolean sentinel=false;
+        do{
+            try{
+                System.out.println("\n////\n//// Which month are we talking about? Please, only use Integers");
+                year = input.nextInt();
+                if(year<LocalDateTime.now().getYear())
+                {
+                    System.out.println("\n////\n//// Ow, sorry. Months go from 01 to 12. \n//// Please, go to EGB.");
+                }else{
+                    sentinel=true;
+                }
+            }catch (Exception e)
+            {
+                System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage integers. \n//// Please, try again.");
+            }
+        }while (!sentinel);
+        return year;
+    }
+
     public static int askMonth(){
         int month=0;
         boolean sentinel=false;
@@ -34,9 +55,13 @@ public class RestaurantInputManager
             try{
                 System.out.println("\n////\n//// Which month are we talking about? Please, only use Integers");
                 month = input.nextInt();
+                LocalDateTime testReservoir = LocalDateTime.of(LocalDateTime.now().getYear(), month, LocalDateTime.now().getDayOfMonth(), 12,0);
+
                 if(month<=0||month>12)
                 {
                     System.out.println("\n////\n//// Ow, sorry. Months go from 01 to 12. \n//// Please, go to EGB.");
+                }else if(testReservoir.isBefore(LocalDateTime.now())){
+                    System.out.println("\n////\n//// Ow, sorry. This month has alreay passed \n//// Please, check your watches.");
                 }else{
                     sentinel=true;
                 }
@@ -48,7 +73,7 @@ public class RestaurantInputManager
         return month;
     }
 
-    public static int askDay(int month) {
+    public static int askDay(int month, int year) {
         int day=0;
         boolean sentinel=false;
         do{
@@ -58,7 +83,7 @@ public class RestaurantInputManager
                 if(day<0 || day>31)
                 {
                     System.out.println("\n////\n//// Ow, sorry. Days, at it's best, goes from 01 to 31. \n//// Please, go to EGB.");
-                }else if(!checkDayOfMonth(day,month)){
+                }else if(!checkDayOfMonth(day,month, year)){
                     System.out.println("\n////\n//// Ouch! Unluckily, that month doesn't have that many days. \n//// Please, go try again.");
                 }else{
                     sentinel=true;
@@ -71,9 +96,9 @@ public class RestaurantInputManager
         return day;
     }
 
-    public static boolean checkDayOfMonth(int day, int month){
+    public static boolean checkDayOfMonth(int day, int month, int year){
         try{
-            LocalDateTime testDate = LocalDateTime.of(LocalDateTime.now().getYear(), month, day, 0, 0);
+            LocalDateTime testDate = LocalDateTime.of(year, month, day, 0, 0);
             return true;
         }catch (Exception e){
             return false;
@@ -123,5 +148,29 @@ public class RestaurantInputManager
             }
         }while (!sentinel);
         return phone;
+    }
+
+    public static int newSchedule()
+    {
+       int tempSchedule=-1;
+       boolean sentinel=false;
+
+        do{
+            try{
+                System.out.println("\n////\n//// What is the new time?\n//// Remember to use the 24h format!");
+                tempSchedule = input.nextInt();
+                if(tempSchedule<0 || tempSchedule>24)
+                {
+                    System.out.println("\n////\n//// Ow, sorry. The day doens't have that many hours.\n//// Please, make you employees relax for some time at least.");
+                }else{
+                    sentinel=true;
+                }
+            }catch (Exception e)
+            {
+                System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage integers. \n//// Please, try again.");
+            }
+        }while (!sentinel);
+
+        return tempSchedule;
     }
 }
