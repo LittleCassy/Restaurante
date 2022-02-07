@@ -1,12 +1,14 @@
+import java.io.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class RestaurantService
+public class RestaurantService implements Serializable
 {
 	static Scanner input = new Scanner(System.in);
 	
-	public static void init() 
-	{
+	public static void init() {
+		createFile();
 		printMenu();
 	}
 	
@@ -87,6 +89,7 @@ public class RestaurantService
 	{
 		Restaurant.getMyReservations().add(newReservoir);
 		System.out.println("\n////\n//// Your reservation has been completed. We'll be waiting for you!");
+		writeFile();
 		printMenu();
 	}
 
@@ -217,5 +220,45 @@ public class RestaurantService
 	public static void printSchedule()
 	{
 		System.out.println(Restaurant.getOpenTime1() + " - " + Restaurant.getCloseTime1() + "   " + Restaurant.getOpenTime2()+" - " + Restaurant.getCloseTime2());
+	}
+
+	public static void createFile(){
+		try {
+			File myObj = new File("listaReservas.txt");
+			if (myObj.createNewFile()) {
+				System.out.println("Fichero creado: " + myObj.getName());
+			} else {
+				System.out.println("El fichero ya existe.");
+				readFile();
+			}
+		} catch (Exception e) {
+			System.out.println("An error occurred.");
+		}
+	}
+
+	public static void writeFile()
+	{
+		try
+		{
+			FileOutputStream fos = new FileOutputStream("t.tmp");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(Restaurant.getMyReservations());
+			oos.close();
+		}catch (Exception e) {
+			System.out.println("An error occurred.");
+		}
+	}
+
+	public static void readFile()
+	{
+		try {
+			FileInputStream fis = new FileInputStream("t.tmp");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			Restaurant.setMyReservations((ArrayList<Reservation>) ois.readObject());
+			ois.close();
+		}catch (Exception e)
+		{
+			System.out.println("An error occurred.");
+		}
 	}
 }

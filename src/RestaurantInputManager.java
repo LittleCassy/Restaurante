@@ -57,11 +57,11 @@ public class RestaurantInputManager
                 month = input.nextInt();
                 LocalDateTime testReservoir = LocalDateTime.of(LocalDateTime.now().getYear(), month, LocalDateTime.now().getDayOfMonth(), 12,0);
 
-                if(month<=0||month>12)
+                if(month<=0 || month>12)
                 {
                     System.out.println("\n////\n//// Ow, sorry. Months go from 01 to 12. \n//// Please, go to EGB.");
                 }else if(testReservoir.isBefore(LocalDateTime.now())){
-                    System.out.println("\n////\n//// Ow, sorry. This month has alreay passed \n//// Please, check your watches.");
+                    System.out.println("\n////\n//// Ow, sorry. This month has already passed \n//// Please, check your watches.");
                 }else{
                     sentinel=true;
                 }

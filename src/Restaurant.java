@@ -22,6 +22,11 @@ public class Restaurant
 		return myReservations;
 	}
 
+	public static void setMyReservations(ArrayList<Reservation> myNewList)
+	{
+		myReservations=myNewList;
+	}
+
 	public static int getNumtables() {
 		return numTables;
 	}
