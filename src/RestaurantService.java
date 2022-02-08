@@ -6,9 +6,10 @@ import java.util.Scanner;
 public class RestaurantService implements Serializable
 {
 	static Scanner input = new Scanner(System.in);
+	static Restaurant myRestaurant = new Restaurant();
 	
 	public static void init() {
-		createFile();
+		FileShenanigans.createFile();
 		printMenu();
 	}
 	
@@ -29,7 +30,9 @@ public class RestaurantService implements Serializable
 		
 		catchData();
 	}
-	
+
+	//region Crear reserva
+
 	public static void catchData() 
 	{
 			try 
@@ -87,11 +90,15 @@ public class RestaurantService implements Serializable
 	
 	public static void addReservoir(Reservation newReservoir) 
 	{
-		Restaurant.getMyReservations().add(newReservoir);
+		myRestaurant.getMyReservations().add(newReservoir);
 		System.out.println("\n////\n//// Your reservation has been completed. We'll be waiting for you!");
-		writeFile();
+		FileShenanigans.writeFile(myRestaurant.getMyReservations());
 		printMenu();
 	}
+
+	//endregion
+
+	//region Checks
 
 	public static void checkSpecificReservation()
 	{
@@ -114,7 +121,7 @@ public class RestaurantService implements Serializable
 	{
 		Reservation aux = null;
 
-		for (Reservation res : Restaurant.getMyReservations()) {
+		for (Reservation res : myRestaurant.getMyReservations()) {
 			if(res.getReservoirName().equals(name) && res.getPhoneNumber() == phone)
 			{
 				aux = res;
@@ -128,15 +135,19 @@ public class RestaurantService implements Serializable
 	{
 		int tempHourOccupancy = 0;
 
-		for (Reservation res : Restaurant.getMyReservations()) {
+		for (Reservation res : myRestaurant.getMyReservations()) {
 			if(res.getReservoirDate().equals(checkReservoir)) 
 			{
-				tempHourOccupancy += res.getNumberOfReserverdTables();
+				tempHourOccupancy += res.getNumberOfReservedTables();
 			}
 		}
 
-		return tempHourOccupancy + tablesNeeded <= Restaurant.getNumtables();
+		return tempHourOccupancy + tablesNeeded <= myRestaurant.getNumtables();
 	}
+
+	//endregion
+
+	//region Schedule
 
 	public static void changeSchedule()
 	{
@@ -184,15 +195,15 @@ public class RestaurantService implements Serializable
 		int aux_Open1 = RestaurantInputManager.newSchedule();
 		int aux_Close1 = RestaurantInputManager.newSchedule();
 
-		if(aux_Open1>=Restaurant.getOpenTime2()){
+		if(aux_Open1>=myRestaurant.getOpenTime2()){
 			System.out.println("\n////\n//// Oh-Oh. We are already open at that time. Please, check the data.");
 			changeSchedule();
-		}else if(Restaurant.getCloseTime2()<aux_Close1){
+		}else if(myRestaurant.getCloseTime2()<aux_Close1){
 			System.out.println("\n////\n//// Oh-Oh. We weren't even closed at that time! Please, check the data.");
 			changeSchedule();
 		}else{
-			Restaurant.setOpenTime1(aux_Open1);
-			Restaurant.setCloseTime1(aux_Close1);
+			myRestaurant.setOpenTime1(aux_Open1);
+			myRestaurant.setCloseTime1(aux_Close1);
 			printSchedule();
 			changeSchedule();
 		}
@@ -203,15 +214,15 @@ public class RestaurantService implements Serializable
 		int aux_Open2 = RestaurantInputManager.newSchedule();
 		int aux_Close2 = RestaurantInputManager.newSchedule();
 
-		if(aux_Open2>=Restaurant.getOpenTime1()){
+		if(aux_Open2>=myRestaurant.getOpenTime1()){
 			System.out.println("\n////\n//// Oh-Oh. We are already open at that time. Please, check the data.");
 			changeSchedule();
-		}else if(Restaurant.getCloseTime1()>aux_Close2){
+		}else if(myRestaurant.getCloseTime1()>aux_Close2){
 			System.out.println("\n////\n//// Oh-Oh. We weren't even closed at that time! Please, check the data.");
 			changeSchedule();
 		}else{
-			Restaurant.setOpenTime2(aux_Open2);
-			Restaurant.setCloseTime2(aux_Close2);
+			myRestaurant.setOpenTime2(aux_Open2);
+			myRestaurant.setCloseTime2(aux_Close2);
 			printSchedule();
 			changeSchedule();
 		}
@@ -219,46 +230,9 @@ public class RestaurantService implements Serializable
 
 	public static void printSchedule()
 	{
-		System.out.println(Restaurant.getOpenTime1() + " - " + Restaurant.getCloseTime1() + "   " + Restaurant.getOpenTime2()+" - " + Restaurant.getCloseTime2());
+		System.out.println(myRestaurant.getOpenTime1() + " - " + myRestaurant.getCloseTime1() + "   " + myRestaurant.getOpenTime2()+" - " + myRestaurant.getCloseTime2());
 	}
 
-	public static void createFile(){
-		try {
-			File myObj = new File("listaReservas.txt");
-			if (myObj.createNewFile()) {
-				System.out.println("Fichero creado: " + myObj.getName());
-			} else {
-				System.out.println("El fichero ya existe.");
-				readFile();
-			}
-		} catch (Exception e) {
-			System.out.println("An error occurred.");
-		}
-	}
+	//endregion
 
-	public static void writeFile()
-	{
-		try
-		{
-			FileOutputStream fos = new FileOutputStream("t.tmp");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(Restaurant.getMyReservations());
-			oos.close();
-		}catch (Exception e) {
-			System.out.println("An error occurred.");
-		}
-	}
-
-	public static void readFile()
-	{
-		try {
-			FileInputStream fis = new FileInputStream("t.tmp");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			Restaurant.setMyReservations((ArrayList<Reservation>) ois.readObject());
-			ois.close();
-		}catch (Exception e)
-		{
-			System.out.println("An error occurred.");
-		}
-	}
 }

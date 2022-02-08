@@ -14,7 +14,7 @@ public class RestaurantInputManager
                 System.out.println("\n////\n//// When do you want the reservation? Our schedule is from 13-15 and 19-22");
                 hour = input.nextInt();
 
-                if((hour >= Restaurant.getOpenTime1() && hour < Restaurant.getCloseTime1()) || (hour >= Restaurant.getOpenTime2() && hour < Restaurant.getCloseTime2())){
+                if((hour >= RestaurantService.myRestaurant.getOpenTime1() && hour < RestaurantService.myRestaurant.getCloseTime1()) || (hour >= RestaurantService.myRestaurant.getOpenTime2() && hour < RestaurantService.myRestaurant.getCloseTime2())){
                     sentinel=true;
                 }else{
                     System.out.println("\n////\n//// Oh, sorry. Our schedule is from 13-15 and 19-22. \n//// Please, try again.");
@@ -32,11 +32,11 @@ public class RestaurantInputManager
         boolean sentinel=false;
         do{
             try{
-                System.out.println("\n////\n//// Which month are we talking about? Please, only use Integers");
+                System.out.println("\n////\n//// Which year are we talking about? Please, only use Integers");
                 year = input.nextInt();
                 if(year<LocalDateTime.now().getYear())
                 {
-                    System.out.println("\n////\n//// Ow, sorry. Months go from 01 to 12. \n//// Please, go to EGB.");
+                    System.out.println("\n////\n//// Ow, sorry. That year has already went by. \n//// Please, get a watch.");
                 }else{
                     sentinel=true;
                 }
@@ -57,10 +57,7 @@ public class RestaurantInputManager
                 month = input.nextInt();
                 LocalDateTime testReservoir = LocalDateTime.of(LocalDateTime.now().getYear(), month, LocalDateTime.now().getDayOfMonth(), 12,0);
 
-                if(month<=0 || month>12)
-                {
-                    System.out.println("\n////\n//// Ow, sorry. Months go from 01 to 12. \n//// Please, go to EGB.");
-                }else if(testReservoir.isBefore(LocalDateTime.now())){
+                if(testReservoir.isBefore(LocalDateTime.now())){
                     System.out.println("\n////\n//// Ow, sorry. This month has already passed \n//// Please, check your watches.");
                 }else{
                     sentinel=true;
@@ -112,7 +109,7 @@ public class RestaurantInputManager
             try{
                 System.out.println("\n////\n//// How many are you, guys? Please, only use Integers");
                 customers = input.nextInt();
-                if(customers<=0 || customers>Restaurant.getNumchairs())
+                if(customers<=0 || customers>RestaurantService.myRestaurant.getNumchairs())
                 {
                     System.out.println("\n////\n//// Ow, sorry. It seems we don't have space for all of you \n//// Please, try again.");
                 }else{
@@ -123,7 +120,7 @@ public class RestaurantInputManager
                 System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage integers. \n//// Please, try again.");
             }
         }while (!sentinel);
-        return customers/Restaurant.getNumchairsbytable();
+        return customers/RestaurantService.myRestaurant.getNumchairsbytable();
     }
 
     public static String askName(){
@@ -161,7 +158,7 @@ public class RestaurantInputManager
                 tempSchedule = input.nextInt();
                 if(tempSchedule<0 || tempSchedule>24)
                 {
-                    System.out.println("\n////\n//// Ow, sorry. The day doens't have that many hours.\n//// Please, make you employees relax for some time at least.");
+                    System.out.println("\n////\n//// Ow, sorry. The day doesn't have that many hours.\n//// Please, make you employees relax for some time at least.");
                 }else{
                     sentinel=true;
                 }

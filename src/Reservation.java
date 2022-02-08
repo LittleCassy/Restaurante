@@ -1,19 +1,20 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Reservation 
+public class Reservation implements Serializable
 {
 	private String reservoirName;
 	private int phoneNumber;
 	private int numberOfClients;
-	private int numberOfReserverdTables;
+	private int numberOfReservedTables;
 	private LocalDateTime reservoirDate;
 	
 	
 
-	public Reservation(String reservoirName, int tempPhone, int numberOfReserverdTables, LocalDateTime reservoirDate) {
+	public Reservation(String reservoirName, int tempPhone, int numberOfReservedTables, LocalDateTime reservoirDate) {
 		this.reservoirName = reservoirName;
 		this.phoneNumber = tempPhone;
-		this.numberOfReserverdTables = numberOfReserverdTables;
+		this.numberOfReservedTables = numberOfReservedTables;
 		this.reservoirDate = reservoirDate;
 	}
 
@@ -41,12 +42,12 @@ public class Reservation
 		this.numberOfClients = numberOfClients;
 	}
 
-	public int getNumberOfReserverdTables() {
-		return numberOfReserverdTables;
+	public int getNumberOfReservedTables() {
+		return numberOfReservedTables;
 	}
 
-	public void setNumberOfReserverdTables(int numberOfReserverdTables) {
-		this.numberOfReserverdTables = numberOfReserverdTables;
+	public void setNumberOfReservedTables(int numberOfReservedTables) {
+		this.numberOfReservedTables = numberOfReservedTables;
 	}
 
 	public LocalDateTime getReservoirDate() {
@@ -59,6 +60,6 @@ public class Reservation
 
 	@Override
 	public String toString() {
-		return "/////////// \nClient: " + reservoirName + "\nDate: " + reservoirDate + "\nPhone: " + phoneNumber + "\nTables Occupied: " + numberOfReserverdTables + "\n///////////";
+		return "/////////// \nClient: " + reservoirName + "\nDate: " + reservoirDate + "\nPhone: " + phoneNumber + "\nTables Occupied: " + numberOfReservedTables + "\n///////////";
 	}
 }
