@@ -8,9 +8,7 @@ public abstract class FileShenanigans implements Serializable
     public static void createFile(){
         try {
             if (myObj.createNewFile()) {
-                System.out.println("File: Fichero creado: " + myObj.getName());
             } else {
-                System.out.println("File: El fichero ya existe.");
                 readFile(RestaurantService.myRestaurant.getMyReservations());
             }
         } catch (Exception e) {

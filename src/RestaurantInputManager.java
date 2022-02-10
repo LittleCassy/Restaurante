@@ -11,13 +11,35 @@ public class RestaurantInputManager
         do{
             try{
                 hour=0;
-                System.out.println("\n////\n//// When do you want the reservation? Our schedule is from 13-15 and 19-22");
+                System.out.println("\n////\n//// When do you want the reservation? Our schedule is from " + RestaurantService.myRestaurant.getOpenTime1()+ "-" + RestaurantService.myRestaurant.getCloseTime1() + " and " + RestaurantService.myRestaurant.getOpenTime2() + "-" + RestaurantService.myRestaurant.getCloseTime1() + "\n////  " + RestaurantService.myRestaurant.getCloseTime1() + " and " + RestaurantService.myRestaurant.getCloseTime2() + " are not included");
                 hour = input.nextInt();
 
                 if((hour >= RestaurantService.myRestaurant.getOpenTime1() && hour < RestaurantService.myRestaurant.getCloseTime1()) || (hour >= RestaurantService.myRestaurant.getOpenTime2() && hour < RestaurantService.myRestaurant.getCloseTime2())){
                     sentinel=true;
                 }else{
                     System.out.println("\n////\n//// Oh, sorry. Our schedule is from 13-15 and 19-22. \n//// Please, try again.");
+                }
+            }catch (Exception e)
+            {
+                System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage integers. \n//// Please, try again.");
+            }
+        }while (!sentinel);
+        return hour;
+    }
+
+    public static int checkHour(){
+        int hour=0;
+        boolean sentinel=false;
+        do{
+            try{
+                hour=0;
+                System.out.println("\n////\n//// When was your reservation?");
+
+                if(hour<0 || hour>24)
+                {
+                    System.out.println("\n////\n//// Ow, sorry. The day doesn't have that many hours.\n//// Please, make you employees relax for some time at least.");
+                }else{
+                    sentinel=true;
                 }
             }catch (Exception e)
             {
@@ -120,7 +142,12 @@ public class RestaurantInputManager
                 System.out.println("\n////\n//// Ow, sorry. Our automated system can only manage integers. \n//// Please, try again.");
             }
         }while (!sentinel);
-        return customers/RestaurantService.myRestaurant.getNumchairsbytable();
+
+        if(customers%RestaurantService.myRestaurant.getNumchairsbytable()!=0){
+            return (customers/RestaurantService.myRestaurant.getNumchairsbytable())+1;
+        }else{
+            return customers/RestaurantService.myRestaurant.getNumchairsbytable();
+        }
     }
 
     public static String askName(){

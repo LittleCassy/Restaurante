@@ -6,7 +6,6 @@ public class Restaurant
 	private ArrayList<Reservation> myReservations = new ArrayList<>();
 	private final int numTables = 4;
 	private final int numChairs = 16;
-	//MAYBE
 	private final int numChairsByTable = 4;
 	private int openTime1 = 13;
 	private int closeTime1 = 15;

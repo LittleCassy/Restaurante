@@ -1,6 +1,5 @@
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RestaurantService implements Serializable
@@ -26,6 +25,8 @@ public class RestaurantService implements Serializable
 		System.out.println("////");
 		System.out.println("//// 3- Change restaurant's schedule");
 		System.out.println("////");
+		System.out.println("//// 4- Get full list of reservations");
+		System.out.println("////");
 		System.out.println("///////////////////////////////////////");
 		
 		catchData();
@@ -43,6 +44,7 @@ public class RestaurantService implements Serializable
 					case 1 -> newReservation();
 					case 2 -> checkSpecificReservation();
 					case 3 -> changeSchedule();
+					case 4 -> getFullReservationList();
 					default -> {
 						System.out.println("\n////\n//// Input one of the numbers in the menu. Please, try again.");
 						catchData();
@@ -64,7 +66,7 @@ public class RestaurantService implements Serializable
 			int aux_Hour = RestaurantInputManager.askHour();
 			int aux_NumTable = RestaurantInputManager.customerNumber();
 
-			LocalDateTime reservoirDate = LocalDateTime.of(aux_Year, aux_Month, aux_Day, aux_Hour, 0); //TODO Minutos
+			LocalDateTime reservoirDate = LocalDateTime.of(aux_Year, aux_Month, aux_Day, aux_Hour, 0);
 
 			if(checkOccupancy(reservoirDate, aux_NumTable)){
 				createReservoir(reservoirDate, aux_NumTable);
@@ -104,10 +106,15 @@ public class RestaurantService implements Serializable
 	{
 		System.out.println("\n////\n//// Give us the name used in the reservation process.");
 		String tempName= RestaurantInputManager.askName();
-		System.out.println("\n////\n//// And now, the phone used in the same reservation.");
-		int tempPhone= RestaurantInputManager.askPhone();
+		System.out.println("\n////\n//// And now, let see when was the reservation.");
+		int aux_Year = RestaurantInputManager.askYear();
+		int aux_Month = RestaurantInputManager.askMonth();
+		int aux_Day = RestaurantInputManager.askDay(aux_Month, aux_Year);
+		int aux_Hour = RestaurantInputManager.checkHour();
 
-		Reservation aux = checkList(tempName,tempPhone);
+		LocalDateTime reservoirDate = LocalDateTime.of(aux_Year, aux_Month, aux_Day, aux_Hour, 0);
+
+		Reservation aux = checkList(tempName, reservoirDate);
 		if(aux==null){
 			System.out.println("\n////\n//// Oh-Oh. We can not find that reservation. Please, check the data.");
 		}else{
@@ -117,12 +124,12 @@ public class RestaurantService implements Serializable
 		printMenu();
 	}
 
-	public static Reservation checkList(String name, int phone)
+	public static Reservation checkList(String name, LocalDateTime localDate)
 	{
 		Reservation aux = null;
 
 		for (Reservation res : myRestaurant.getMyReservations()) {
-			if(res.getReservoirName().equals(name) && res.getPhoneNumber() == phone)
+			if(res.getReservoirName().equals(name) && res.getReservoirDate().equals(localDate))
 			{
 				aux = res;
 			}
@@ -143,6 +150,11 @@ public class RestaurantService implements Serializable
 		}
 
 		return tempHourOccupancy + tablesNeeded <= myRestaurant.getNumtables();
+	}
+
+	public static void getFullReservationList(){
+		System.out.println(myRestaurant.getMyReservations());
+		printMenu();
 	}
 
 	//endregion
