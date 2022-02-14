@@ -1,27 +1,29 @@
 import java.io.*;
-import java.util.ArrayList;
 
 public abstract class FileShenanigans implements Serializable
 {
-    static File myObj = new File("listaReservas.ser");
+    static File myRestaurant = new File("Restaurante.ser");
 
-    public static void createFile(){
+    //region Horario Restaurante
+
+    public static void createRestaurantFile(){
         try {
-            if (myObj.createNewFile()) {
-            } else {
-                readFile(RestaurantService.myRestaurant.getMyReservations());
+            if (myRestaurant.createNewFile()) {
+                writeScheduleList();
+            }else {
+                readScheduleList();
             }
         } catch (Exception e) {
             System.out.println("File: An error occurred.");
         }
     }
 
-    public static void writeFile(ArrayList<Reservation> myReservations)
+    public static void writeScheduleList()
     {
         try {
-            FileOutputStream fos = new FileOutputStream(myObj);
+            FileOutputStream fos = new FileOutputStream(myRestaurant);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(myReservations);
+            oos.writeObject(RestaurantService.myRestaurant);
             fos.close();
             oos.close();
         }catch (Exception e) {
@@ -29,17 +31,19 @@ public abstract class FileShenanigans implements Serializable
         }
     }
 
-    public static void readFile(ArrayList<Reservation> myReservations)
+    public static void readScheduleList()
     {
         try {
-            FileInputStream fis = new FileInputStream(myObj);
+            FileInputStream fis = new FileInputStream(myRestaurant);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            RestaurantService.myRestaurant.setMyReservations((ArrayList<Reservation>) ois.readObject());
+            RestaurantService.myRestaurant =(Restaurant)ois.readObject();
             ois.close();
             ois.close();
         }catch (Exception e)
         {
             System.out.println("File: An error occurred." + e);
         }
+
+    //endregion
     }
 }

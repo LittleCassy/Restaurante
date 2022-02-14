@@ -5,6 +5,8 @@ public class RestaurantInputManager
 {
     static Scanner input = new Scanner(System.in);
 
+    //region Date
+
     public static int askHour(){
         int hour=0;
         boolean sentinel=false;
@@ -70,14 +72,14 @@ public class RestaurantInputManager
         return year;
     }
 
-    public static int askMonth(){
+    public static int askMonth(int year){
         int month=0;
         boolean sentinel=false;
         do{
             try{
                 System.out.println("\n////\n//// Which month are we talking about? Please, only use Integers");
                 month = input.nextInt();
-                LocalDateTime testReservoir = LocalDateTime.of(LocalDateTime.now().getYear(), month, LocalDateTime.now().getDayOfMonth(), 12,0);
+                LocalDateTime testReservoir = LocalDateTime.of(year, month, LocalDateTime.now().getDayOfMonth(), 12,0);
 
                 if(testReservoir.isBefore(LocalDateTime.now())){
                     System.out.println("\n////\n//// Ow, sorry. This month has already passed \n//// Please, check your watches.");
@@ -123,6 +125,10 @@ public class RestaurantInputManager
             return false;
         }
     }
+
+    //endregion
+
+    //region Customer Data
 
     public static int customerNumber() {
         int customers=0;
@@ -174,6 +180,10 @@ public class RestaurantInputManager
         return phone;
     }
 
+    //endregion
+
+    //region Schedule
+
     public static int newSchedule()
     {
        int tempSchedule=-1;
@@ -196,5 +206,84 @@ public class RestaurantInputManager
         }while (!sentinel);
 
         return tempSchedule;
+    }
+
+    //endregion
+
+    public static int changeReservoir()
+    {
+        boolean sentinel=false;
+        String aux;
+
+        do{
+            try {
+                aux=input.next();
+                switch (aux) {
+                    case "Remove" -> {
+                        sentinel = true;
+                        return 1;
+                    }
+                    case "Update" -> {
+                        sentinel = true;
+                        return 2;
+                    }
+                    case "Exit" -> {
+                        sentinel = true;
+                        return 3;
+                    }
+                    default -> System.out.println("\n////\n//// Ups, Sorry! I couldn't understand you. \n////\n//// Type: Remove - Update or Exit");
+                }
+            }catch (Exception e){
+                System.out.println("\n////\n//// Ups, Sorry! I couldn't understand you. \n////\n//// Type: Remove - Update or Exit");
+            }
+        }while (!sentinel);
+
+        return 0;
+    }
+
+    public static int optionChangeReservoir(){
+        boolean sentinel=false;
+        String aux;
+
+        do{
+            try {
+                aux=input.next();
+                switch (aux) {
+                    case "Year" -> {
+                        sentinel = true;
+                        return 1;
+                    }
+                    case "Month" -> {
+                        sentinel = true;
+                        return 2;
+                    }
+                    case "Day" -> {
+                        sentinel = true;
+                        return 3;
+                    }
+                    case "Hour" -> {
+                        sentinel = true;
+                        return 4;
+                    }
+                    case "Customers" -> {
+                        sentinel = true;
+                        return 5;
+                    }
+                    case "Name" -> {
+                        sentinel = true;
+                        return 6;
+                    }
+                    case "Phone" -> {
+                        sentinel = true;
+                        return 7;
+                    }
+                    default -> System.out.println("\n////\n//// Ups, Sorry! I couldn't understand you. \n////\n//// Type: Year, Month, Day, Hour, Customer, Name or Phone");
+                }
+            }catch (Exception e){
+                System.out.println("\n////\n//// Ups, Sorry! I couldn't understand you. \n////\n//// Type: Year, Month, Day, Hour, Customer, Name or Phone");
+            }
+        }while (!sentinel);
+
+        return 0;
     }
 }

@@ -62,4 +62,12 @@ public class Reservation implements Serializable
 	public String toString() {
 		return "/////////// \nClient: " + reservoirName + "\nDate: " + reservoirDate + "\nPhone: " + phoneNumber + "\nTables Occupied: " + numberOfReservedTables + "\n///////////";
 	}
+
+	public Reservation(Reservation reserv){
+		this.reservoirName = reserv.reservoirName;
+		phoneNumber = reserv.phoneNumber;
+		numberOfClients = reserv.numberOfClients;
+		numberOfReservedTables = reserv.numberOfReservedTables;
+		reservoirDate = reserv.reservoirDate;
+	}
 }

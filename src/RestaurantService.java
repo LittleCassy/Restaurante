@@ -5,17 +5,17 @@ import java.util.Scanner;
 public class RestaurantService implements Serializable
 {
 	static Scanner input = new Scanner(System.in);
-	static Restaurant myRestaurant = new Restaurant();
+	static Restaurant myRestaurant;
 	
 	public static void init() {
-		FileShenanigans.createFile();
+		FileShenanigans.createRestaurantFile();
 		printMenu();
 	}
 	
 	public static void printMenu()
 	{
 		System.out.println("///////////////////////////////////////");
-		System.out.println("//// Welcome to Cassy FazCat's Pizza");
+		System.out.println("//// Welcome to Circus Cassy's entertainment and rentals");
 		System.out.println("///////////////////////////////////////");
 		System.out.println("//// What can we do for you?");
 		System.out.println("////");
@@ -25,43 +25,43 @@ public class RestaurantService implements Serializable
 		System.out.println("////");
 		System.out.println("//// 3- Change restaurant's schedule");
 		System.out.println("////");
-		System.out.println("//// 4- Get full list of reservations");
+		System.out.println("//// 99- Get full list of reservations");
 		System.out.println("////");
 		System.out.println("///////////////////////////////////////");
 		
 		catchData();
 	}
 
-	//region Crear reserva
-
-	public static void catchData() 
+	public static void catchData()
 	{
-			try 
-			{
-				System.out.println("////\n//// What would you like to do?");
-				int tempChoice = input.nextInt();
-				switch (tempChoice) {
-					case 1 -> newReservation();
-					case 2 -> checkSpecificReservation();
-					case 3 -> changeSchedule();
-					case 4 -> getFullReservationList();
-					default -> {
-						System.out.println("\n////\n//// Input one of the numbers in the menu. Please, try again.");
-						catchData();
-					}
+		try
+		{
+			System.out.println("////\n//// What would you like to do?");
+			int tempChoice = input.nextInt();
+			switch (tempChoice) {
+				case 1 -> newReservation();
+				case 2 -> checkSpecificReservation();
+				case 3 -> changeSchedule();
+				case 99 -> getFullReservationList();
+				default -> {
+					System.out.println("\n////\n//// Input one of the numbers in the menu. Please, try again.");
+					catchData();
 				}
-			}catch(Exception e) 
-			{
-				System.out.println("\n////\n//// Input one of the numbers in the menu. Please, try again.");
-				catchData();
 			}
+		}catch(Exception e)
+		{
+			System.out.println("\n////\n//// Input one of the numbers in the menu. Please, try again.");
+			catchData();
+		}
 	}
+
+	//region Crear reserva
 
 	public static void newReservation() 
 	{
 		try{
 			int aux_Year = RestaurantInputManager.askYear();
-			int aux_Month = RestaurantInputManager.askMonth();
+			int aux_Month = RestaurantInputManager.askMonth(aux_Year);
 			int aux_Day = RestaurantInputManager.askDay(aux_Month, aux_Year);
 			int aux_Hour = RestaurantInputManager.askHour();
 			int aux_NumTable = RestaurantInputManager.customerNumber();
@@ -94,7 +94,7 @@ public class RestaurantService implements Serializable
 	{
 		myRestaurant.getMyReservations().add(newReservoir);
 		System.out.println("\n////\n//// Your reservation has been completed. We'll be waiting for you!");
-		FileShenanigans.writeFile(myRestaurant.getMyReservations());
+		FileShenanigans.writeScheduleList();
 		printMenu();
 	}
 
@@ -108,7 +108,7 @@ public class RestaurantService implements Serializable
 		String tempName= RestaurantInputManager.askName();
 		System.out.println("\n////\n//// And now, let see when was the reservation.");
 		int aux_Year = RestaurantInputManager.askYear();
-		int aux_Month = RestaurantInputManager.askMonth();
+		int aux_Month = RestaurantInputManager.askMonth(aux_Year);
 		int aux_Day = RestaurantInputManager.askDay(aux_Month, aux_Year);
 		int aux_Hour = RestaurantInputManager.checkHour();
 
@@ -117,11 +117,22 @@ public class RestaurantService implements Serializable
 		Reservation aux = checkList(tempName, reservoirDate);
 		if(aux==null){
 			System.out.println("\n////\n//// Oh-Oh. We can not find that reservation. Please, check the data.");
+			printMenu();
 		}else{
 			System.out.println(aux);
-		}
 
-		printMenu();
+			System.out.println("\n////\n//// Would you like to remove it? Update it? Or we go back to the menu? \n////\n//// Type: Remove - Update or Exit");
+
+			switch (RestaurantInputManager.changeReservoir()){
+				case 1 -> myRestaurant.getMyReservations().remove(aux);
+				case 2 -> updateReservation(aux);
+				case 3 -> printMenu();
+				default -> {
+					System.out.println("\n////\n//// Uh-Oh. Something went wrong \n////\n//// Going back to the safe room!");
+					printMenu();
+				}
+			}
+		}
 	}
 
 	public static Reservation checkList(String name, LocalDateTime localDate)
@@ -172,7 +183,9 @@ public class RestaurantService implements Serializable
 		System.out.println("////");
 		System.out.println("//// 2- Change afternoon schedule");
 		System.out.println("////");
-		System.out.println("//// 3- Go back");
+		System.out.println("//// 3- Check schedule");
+		System.out.println("////");
+		System.out.println("//// 4- Go back");
 		System.out.println("////");
 		System.out.println("///////////////////////////////////////");
 
@@ -188,6 +201,9 @@ public class RestaurantService implements Serializable
 					changeAfternoonSchedule();
 					break;
 				case 3:
+					printSchedule();
+					break;
+				case 4:
 					printMenu();
 					break;
 				default:
@@ -242,9 +258,30 @@ public class RestaurantService implements Serializable
 
 	public static void printSchedule()
 	{
+		FileShenanigans.writeScheduleList();
 		System.out.println(myRestaurant.getOpenTime1() + " - " + myRestaurant.getCloseTime1() + "   " + myRestaurant.getOpenTime2()+" - " + myRestaurant.getCloseTime2());
 	}
 
 	//endregion
+
+	public static void updateReservation(Reservation reservoir)
+	{
+		switch (RestaurantInputManager.optionChangeReservoir()){
+			//
+			case 1 -> ;
+			case 2 -> ;
+			case 3 -> ;
+			case 4 -> ;
+			case 5 -> ;
+			//
+			case 6 -> reservoir.setReservoirName(RestaurantInputManager.askName());
+			case 7 -> ;
+		}
+
+		//Reservation aux_reserv = new Reservation(reservoir);
+		//myRestaurant.getMyReservations().remove(reservoir);
+
+
+	}
 
 }

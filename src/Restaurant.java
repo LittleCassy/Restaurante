@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 
-public class Restaurant
+public class Restaurant implements Serializable
 {
 	private ArrayList<Reservation> myReservations = new ArrayList<>();
 	private final int numTables = 4;
