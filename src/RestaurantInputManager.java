@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class RestaurantInputManager
@@ -217,17 +218,17 @@ public class RestaurantInputManager
 
         do{
             try {
-                aux=input.next();
+                aux=input.next().toUpperCase();
                 switch (aux) {
-                    case "Remove" -> {
+                    case "REMOVE" -> {
                         sentinel = true;
                         return 1;
                     }
-                    case "Update" -> {
+                    case "UPDATE" -> {
                         sentinel = true;
                         return 2;
                     }
-                    case "Exit" -> {
+                    case "EXIT" -> {
                         sentinel = true;
                         return 3;
                     }
@@ -245,35 +246,37 @@ public class RestaurantInputManager
         boolean sentinel=false;
         String aux;
 
+        System.out.println("\n////\n//// What would you like to change? \n////\n//// Type: Year, Month, Day, Hour, Customer, Name or Phone.");
+
         do{
             try {
-                aux=input.next();
+                aux=input.next().toUpperCase();
                 switch (aux) {
-                    case "Year" -> {
+                    case "YEAR" -> {
                         sentinel = true;
                         return 1;
                     }
-                    case "Month" -> {
+                    case "MONTH" -> {
                         sentinel = true;
                         return 2;
                     }
-                    case "Day" -> {
+                    case "DAY" -> {
                         sentinel = true;
                         return 3;
                     }
-                    case "Hour" -> {
+                    case "HOUR" -> {
                         sentinel = true;
                         return 4;
                     }
-                    case "Customers" -> {
+                    case "CUSTOMER" -> {
                         sentinel = true;
                         return 5;
                     }
-                    case "Name" -> {
+                    case "NAME" -> {
                         sentinel = true;
                         return 6;
                     }
-                    case "Phone" -> {
+                    case "PHONE" -> {
                         sentinel = true;
                         return 7;
                     }

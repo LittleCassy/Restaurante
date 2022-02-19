@@ -5,7 +5,6 @@ public class Reservation implements Serializable
 {
 	private String reservoirName;
 	private int phoneNumber;
-	private int numberOfClients;
 	private int numberOfReservedTables;
 	private LocalDateTime reservoirDate;
 	
@@ -34,14 +33,6 @@ public class Reservation implements Serializable
 		this.phoneNumber = phoneNumber;
 	}
 
-	public int getNumberOfClients() {
-		return numberOfClients;
-	}
-
-	public void setNumberOfClients(int numberOfClients) {
-		this.numberOfClients = numberOfClients;
-	}
-
 	public int getNumberOfReservedTables() {
 		return numberOfReservedTables;
 	}
@@ -66,7 +57,6 @@ public class Reservation implements Serializable
 	public Reservation(Reservation reserv){
 		this.reservoirName = reserv.reservoirName;
 		phoneNumber = reserv.phoneNumber;
-		numberOfClients = reserv.numberOfClients;
 		numberOfReservedTables = reserv.numberOfReservedTables;
 		reservoirDate = reserv.reservoirDate;
 	}

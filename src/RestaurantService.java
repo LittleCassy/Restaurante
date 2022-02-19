@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class RestaurantService implements Serializable
 {
 	static Scanner input = new Scanner(System.in);
-	static Restaurant myRestaurant;
+	static Restaurant myRestaurant = new Restaurant();
 	
 	public static void init() {
 		FileShenanigans.createRestaurantFile();
@@ -110,7 +110,7 @@ public class RestaurantService implements Serializable
 		int aux_Year = RestaurantInputManager.askYear();
 		int aux_Month = RestaurantInputManager.askMonth(aux_Year);
 		int aux_Day = RestaurantInputManager.askDay(aux_Month, aux_Year);
-		int aux_Hour = RestaurantInputManager.checkHour();
+		int aux_Hour = RestaurantInputManager.askHour();
 
 		LocalDateTime reservoirDate = LocalDateTime.of(aux_Year, aux_Month, aux_Day, aux_Hour, 0);
 
@@ -123,7 +123,9 @@ public class RestaurantService implements Serializable
 
 			System.out.println("\n////\n//// Would you like to remove it? Update it? Or we go back to the menu? \n////\n//// Type: Remove - Update or Exit");
 
-			switch (RestaurantInputManager.changeReservoir()){
+			int aux_choice = RestaurantInputManager.changeReservoir();
+
+			switch (aux_choice){
 				case 1 -> myRestaurant.getMyReservations().remove(aux);
 				case 2 -> updateReservation(aux);
 				case 3 -> printMenu();
@@ -133,6 +135,8 @@ public class RestaurantService implements Serializable
 				}
 			}
 		}
+
+		printMenu();
 	}
 
 	public static Reservation checkList(String name, LocalDateTime localDate)
@@ -268,20 +272,46 @@ public class RestaurantService implements Serializable
 	{
 		switch (RestaurantInputManager.optionChangeReservoir()){
 			//
-			case 1 -> ;
-			case 2 -> ;
-			case 3 -> ;
-			case 4 -> ;
-			case 5 -> ;
+			case 1 -> changeDate(reservoir, 1);
+			case 2 -> changeDate(reservoir, 2);
+			case 3 -> changeDate(reservoir, 3);
+			case 4 -> changeDate(reservoir, 4);
+			case 5 -> changeDate(reservoir, 5);
 			//
 			case 6 -> reservoir.setReservoirName(RestaurantInputManager.askName());
-			case 7 -> ;
+			case 7 -> reservoir.setPhoneNumber(RestaurantInputManager.askPhone());
 		}
-
-		//Reservation aux_reserv = new Reservation(reservoir);
-		//myRestaurant.getMyReservations().remove(reservoir);
-
-
 	}
 
+	public static void changeDate(Reservation reservoir, int index)
+	{
+		LocalDateTime d = reservoir.getReservoirDate();
+		Reservation aux_Res = new Reservation(reservoir);
+
+		myRestaurant.getMyReservations().remove(reservoir);
+
+		int aux_Year = d.getYear();
+		int aux_Month = d.getMonthValue();
+		int aux_Day= d.getDayOfMonth();
+		int aux_Hour = d.getHour();
+		int aux_Cust = aux_Res.getNumberOfReservedTables();
+
+		switch (index) {
+			//
+			case 1 -> aux_Year = RestaurantInputManager.askYear();
+			case 2 -> aux_Month = RestaurantInputManager.askMonth(aux_Year);
+			case 3 -> aux_Day = RestaurantInputManager.askDay(aux_Month,aux_Year);
+			case 4 -> aux_Hour = RestaurantInputManager.askHour();
+			case 5 -> aux_Cust = RestaurantInputManager.customerNumber();
+		}
+
+		LocalDateTime t = LocalDateTime.of(aux_Year,aux_Month, aux_Day, aux_Hour, 00);
+
+		if(checkOccupancy(t, aux_Cust)){
+			aux_Res.setReservoirDate(t);
+			aux_Res.setNumberOfReservedTables(aux_Cust);
+		}
+
+		addReservoir(aux_Res);
+	}
 }
